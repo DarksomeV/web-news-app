@@ -1,0 +1,90 @@
+* {
+  font-family: 'Ubuntu', sans-serif;
+}
+a {
+  color: inherit;
+}
+i.material-icons {
+  cursor: pointer;
+}
+
+header {
+  padding: 50px 0;
+  text-align: center;
+  font-weight: bold;
+}
+
+header .header-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  margin: auto;
+}
+
+header .logo {
+  position: relative;
+}
+
+header h1:before {
+  content: '*';
+  font-size: 31px;
+  position: absolute;
+  top: -25px;
+  left: 76px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 60px;
+  margin-bottom: 15px;
+  border-bottom: 1px #000 solid;
+}
+
+header span {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 0;
+}
+
+header span:before {
+  font-size: 29px;
+  content: '*';
+  vertical-align: middle;
+  font-weight: 400;
+}
+
+header a {
+  font-weight: 400;
+}
+
+.card .card-content p a {
+  color: #000;
+}
+.card .card-content p i.star {
+  vertical-align: middle;
+  margin-left: 5px;
+}
+.card .card-action {
+  border-top: none;
+}
+
+.select-wrapper input.select-dropdown:focus {
+  border-bottom: 1px #000 solid;
+}
+
+.dropdown-content li > a, .dropdown-content li > span {
+  color: black;
+}
+
+input[type=text]:not(.browser-default):focus:not([readonly]),
+input[type=password]:not(.browser-default):focus:not([readonly]) {
+  border-bottom: 1px solid black;
+  color: black;
+  box-shadow: none;
+}
+
+input[type=text]:not(.browser-default):focus:not([readonly]) + label,
+input[type=password]:not(.browser-default):focus:not([readonly]) + label {
+  color: black;
+}
