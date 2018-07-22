@@ -6,6 +6,11 @@ const ui = new UI();
 const apiKey = "2e6dc33b3f184a6db04ec92b5013dad7";
 //Init Auth
 const auth = new Auth();
+// // Init favorite news
+const news = new FavoriteNews();
+// Init news store
+const newsStore = NewsStore.getInstance();
+
 
 
 // Init elements
@@ -15,6 +20,7 @@ const selectCategory = document.getElementById("category");
 const searchInput = document.getElementById("search");
 const searchBtn = document.getElementById("searchBtn");
 const logout = document.querySelector('.logout');
+const newsContainer = document.querySelector('.news-container');
 
 // All events
 select.addEventListener("change", onChangeCountryAndCategory);
@@ -22,7 +28,7 @@ selectCategory.addEventListener("change", onChangeCountryAndCategory);
 selectSources.addEventListener("change", onChangeSources);
 searchBtn.addEventListener("click", onSearch);
 logout.addEventListener("click", onLogout);
-
+newsContainer.addEventListener("click", addFavorite);
 
 // Check auth state
 firebase.auth().onAuthStateChanged(function (user) {
@@ -59,7 +65,9 @@ function onChangeCountryAndCategory(e) {
         .then(data => {
             ui.clearContainer();
             // перебираем новости из поля articles в объекте response
-            data.articles.forEach(news => ui.addNews(news));
+            data.articles.forEach((news, index) => ui.addNews(news, index));
+            // сохраняем новости в хранилище news-store
+            newsStore.setNews(data.articles); 
         })
         .catch(err => {
             ui.showInfo(`Новости по стране ${select.value} ${select.value !== '' ? ' и по данной категории' : ''}  не найдены`);
@@ -97,7 +105,9 @@ function onChangeSources(e) {
             // Удаляем разметку из контейнера
             ui.clearContainer();
             // перебираем новости из поля articles в объекте response
-            data.articles.forEach(news => ui.addNews(news));
+            data.articles.forEach((news, index) => ui.addNews(news, index));
+            // сохраняем новости в хранилище news-store
+            newsStore.setNews(data.articles); 
         })
         .catch(err => {
             // Выводим ошибку
@@ -135,7 +145,9 @@ function onSearch(e) {
         .then(data => {
             ui.clearContainer();
             // перебираем новости из поля articles в объекте response
-            data.articles.forEach(news => ui.addNews(news));
+            data.articles.forEach((news, index) => ui.addNews(news, index));
+            // сохраняем новости в хранилище news-store
+            newsStore.setNews(data.articles); 
         })
         .catch(err => {
             ui.showError(err);
@@ -147,6 +159,21 @@ function onLogout() {
     auth.logout()
         .then(() => window.location = 'login-start.html')
         .catch(err => console.log(err));
+}
+
+function addFavorite(e) {
+  if (e.target.classList.contains("add-favorite")) {
+    const index = e.target.dataset.index;
+    const oneNews = newsStore.getNews()[index];
+    news.addFavoriteNews(oneNews)
+      .then(data => {
+        // вывести сообщение что новость добавлена успешно
+        console.log(data);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
 }
 
 // Отдельный запрос на получение ресурсов
