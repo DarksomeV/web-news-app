@@ -6,13 +6,13 @@ class UI {
 
   addNews(news, index) {
     const template = `
-      <div class="col s12 m6">
+      <div class="col s12 m6 card-item-wrapper">
           <div class="card left-align">
               <div class="card-image waves-effect waves-block waves-light">
                   <img class="activator" src="${news.urlToImage}">
               </div>
               <div class="card-content">
-                  <span class="card-title activator grey-text text-darken-4">${news.title}<i class="material-icons right">more_vert</i></span>
+                  <span class="card-title activator grey-text text-darken-4">${news.title}</span>
                   <p><a href="${news.url}">Read more</a></p>
                   <button data-index="${index}" class="waves-effect waves-light btn add-favorite">Add favorite</button>
               </div>
@@ -24,12 +24,19 @@ class UI {
       </div>
     `;
 
-    this.container.insertAdjacentHTML("beforeend", template);
+let div = document.createElement('div');
+    div.innerHTML = template.trim();
+    div.classList.add('animation-wrapper');
+    div.style.opacity = 0;
+    div.style.transform = 'translateY(30px)';
+
+    this.container.insertAdjacentElement("beforeend", div);
+
+    this.animationElement(div);
   }
 
     addFavoriteNews(news, id) {
     const template = `
-      <div class="col s12 m6">
           <div class="card left-align">
               <div class="card-image waves-effect waves-block waves-light">
                   <img class="activator" src="${news.urlToImage}">
@@ -44,11 +51,40 @@ class UI {
                   <p>${news.description}</p>
               </div>
           </div>
-      </div>
     `;
 
-    this.container.insertAdjacentHTML("beforeend", template);
+    let div = document.createElement('div');
+    div.innerHTML = template.trim();
+    div.classList.add('col', 's12', 'm6', 'card-item-wrapper');
+    div.style.opacity = 0;
+    div.style.transform = 'translateY(100px)';
+
+    this.container.insertAdjacentElement("beforeend", div);
+
+    this.animationElement(div);
   }
+
+  animationElement(element) {
+    // step of changing property
+      let step = 0;
+      let transformStep = 30;
+
+      function animateAction(time) {
+        if (parseFloat(element.style.opacity) < 1) step += 0.05;
+        if (transformStep) transformStep -= 1;
+        
+        element.style.opacity = step;
+        element.style.transform = `translateY(${transformStep}px)`;
+        const raf = requestAnimationFrame(animateAction);
+        // проверяем если opacity < 1 то мы продолжаем делать requestAnimationFrame
+        if (parseFloat(element.style.opacity) >= 1 && transformStep <= 0) {
+          cancelAnimationFrame(raf);
+        }
+      }
+
+      animateAction();
+  }
+
 
 
     clearContainer() {

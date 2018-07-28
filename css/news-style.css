@@ -10,3 +10,19 @@ header {
   font-weight: bold;
 }
 
+.card-item-wrapper .card .card-image img{
+	height: 24rem;
+}
+
+.card .card-content .card-title{
+	display: flex;
+ align-items: start;
+	height: 64px;
+	margin-bottom: 5px;
+	overflow: hidden;
+}
+
+.card-item-wrapper{
+	height: 
+}
+
